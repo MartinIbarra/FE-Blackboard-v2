@@ -1,0 +1,68 @@
+import { Routes, Route } from "react-router-dom";
+import { socket } from "./socket";
+// import { useEffect, useState } from "react";
+// import { globalState } from "./store";
+// import { useHookstate } from "@hookstate/core";
+import Blackboard from "./views/Blackboard";
+// import { UserContext } from "./UserContext";
+// import Layout from "./views/Layout";
+// import Home from "./views/Home";
+import Layout from "./views/Layout";
+// import Signup from "./views/Signup";
+import Login from "./views/Login";
+import { useEffect, useState } from "react";
+import { RoomListI } from "./types/room.types";
+
+function App() {
+  // const { user } = useHookstate(globalState);
+
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [room_list, set_room_list] = useState<RoomListI>([]);
+
+  useEffect(() => {
+    const onConnect = () => {
+      // console.log("connected");
+      setIsConnected(true);
+    };
+    const onDisconnect = () => {
+      // console.log("disconnected");
+      setIsConnected(false);
+    };
+
+    const onRoomList = (roomList: RoomListI) => {
+      console.log("onRoomList =>", roomList);
+      set_room_list(roomList);
+    };
+
+    // const onJoinRoom = () => {
+    //   console.log("onJoinRoom =>");
+    // };
+
+    socket.on("room_list", onRoomList);
+    // socket.on("joinRoom", onJoinRoom);
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      // socket.off("joinRoom", onJoinRoom);
+      socket.off("room_list", onRoomList);
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
+
+  return (
+    <Routes>
+      <Route element={<Layout isConnected={isConnected}></Layout>}>
+        <Route path="/" element={<Login rooms_list={room_list} />} />
+        <Route path="/room" element={<Blackboard />} />
+        {/* <Home /> */}
+      </Route>
+      {/* <Route path="/" element={<Home />} /> */}
+      {/* <Route path="/login" component={Login} /> */}
+    </Routes>
+  );
+}
+
+export default App;

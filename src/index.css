@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+
+  background: #242424;
+  background: radial-gradient(
+    circle,
+    rgba(30, 30, 30, 1) 15%,
+    rgba(35, 35, 35, 1) 49%,
+    rgba(42, 42, 42, 1) 100%
+  );
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  @apply h-screen w-screen;
+}
+
+.room-form-container {
+  @apply flex flex-col w-96 bg-[#DC5F00] m-auto rounded-md p-2 items-center justify-center;
+}
+
+.room-input {
+  @apply flex h-10 p-2 rounded-md bg-[#e5e5e5];
+}
+
+.submit-room {
+  @apply flex h-10 p-2 bg-[#4F4A45] text-white rounded-md;
+}
+
+.form-container {
+  @apply flex w-72 justify-between my-4 px-0;
+}
+
+.homeBackground {
+  background: rgb(2, 0, 36);
+  background: radial-gradient(
+    circle,
+    rgba(2, 0, 36, 1) 15%,
+    rgba(9, 9, 121, 1) 49%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
