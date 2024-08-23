@@ -4,8 +4,10 @@ import {
   ClientToServerEvents,
 } from "./types/socket.types";
 
-const URL: string | undefined =
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+const URL: string =
+  process.env.NODE_ENV === "production"
+    ? (process.env.BACKEND_ENDPOINT as string)
+    : "http://localhost:5000";
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   URL,
