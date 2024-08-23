@@ -1,5 +1,3 @@
-import React from "react";
-
 const Signup = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (e: any) => {
