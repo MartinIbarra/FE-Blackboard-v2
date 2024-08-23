@@ -1,7 +1,8 @@
 import React from "react";
 
 const Signup = () => {
-  const onSubmit = (e: React.FormEvent) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (e: any) => {
     e.preventDefault();
     const user_input_name = e.target[0].value;
     const user_input_email = e.target[1].value;
