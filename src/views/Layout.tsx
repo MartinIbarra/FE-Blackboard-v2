@@ -1,13 +1,13 @@
 import { Button } from "flowbite-react";
-import React, { ReactNode } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import React from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { socket } from "../socket";
 
 // type Props = {
 //   children: ReactNode;
 // };
 
-const Layout: React.FC<{ isConnected: boolean }> = ({ isConnected }) => {
+const Layout: React.FC<{ isConnected?: boolean }> = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col h-screen w-screen">

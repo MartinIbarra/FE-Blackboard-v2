@@ -11,8 +11,10 @@ import { useLocation } from "react-router-dom";
 // import { UserContext } from "../../UserContext";
 
 const Blackboard = () => {
-  const borradorRef = useRef(null);
-  const penRef = useRef(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const borradorRef = useRef(null) as any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const penRef = useRef(null) as any;
   // const [color, setColor] = useState("#000000");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useLocation();
@@ -121,7 +123,12 @@ const Blackboard = () => {
       // });
       ctx.lineWidth = 1;
 
-      if (borradorRef.current !== null && penRef.current !== null) {
+      if (
+        borradorRef &&
+        borradorRef.current !== null &&
+        penRef &&
+        penRef.current !== null
+      ) {
         borradorRef.current.addEventListener(
           "click",
           () => {
