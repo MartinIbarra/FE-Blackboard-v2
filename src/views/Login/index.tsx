@@ -59,6 +59,10 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   const createRoom = () => {
     if (validateForm()) {
       socket.emit("createRoom", { room: roomName, socket_name: name });
+      socket.emit("joinRoom", {
+        room: roomName,
+        socket_name: name,
+      });
       navigate("/room", { state: { room: roomName, socket_name: name } });
     }
   };

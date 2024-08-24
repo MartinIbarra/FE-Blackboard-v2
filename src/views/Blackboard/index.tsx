@@ -28,11 +28,6 @@ const Blackboard = () => {
   // };
 
   useEffect(() => {
-    socket.emit("joinRoom", {
-      room: state.room,
-      socket_name: state.socket_name,
-    });
-
     const canv = canvasRef.current;
     const ctx = canv?.getContext("2d");
     let dibujando = false;
@@ -61,7 +56,7 @@ const Blackboard = () => {
 
     const borrar = (e: MouseEvent) => {
       const pos = obtenerPosicion(e);
-      socket.emit("borrando", { pos, room_id: state.room_name });
+      socket.emit("borrando", { pos, room_id: state.room });
       ctx?.clearRect(pos.x - 50, pos.y - 50, 100, 100);
     };
 
@@ -71,6 +66,7 @@ const Blackboard = () => {
 
     const dibujandoSocket = (data: DibujandoSocketTypes) => {
       if (ctx) {
+        console.log("dibujandosocket => ", data);
         ctx?.beginPath();
         ctx.lineCap = "round";
         ctx.strokeStyle = !data.color ? "#000000" : data.color;
@@ -98,9 +94,10 @@ const Blackboard = () => {
         obtenerPosicion(event);
         // console.log("state en dibujandoSocket => ", state);
         socket.emit("dibujandoSocket", {
+          origin: state.socket_name,
           oldCoord,
           coordenadas,
-          room_name: state.room,
+          room: state.room,
           color: "#000000",
         });
 

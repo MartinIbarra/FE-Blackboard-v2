@@ -13,8 +13,9 @@ export interface BorradorTypes {
 export interface DibujandoSocketTypes {
   oldCoord: CoordenadasTypes;
   coordenadas: CoordenadasTypes;
-  room_name: string;
+  room: string;
   color: string;
+  origin: string;
 }
 
 export interface RoomNameI {
@@ -53,7 +54,7 @@ export interface ClientToServerEvents {
     name: string;
     room_id: string;
     user_id: string;
-    room_name: string;
+    room: string;
   }) => void;
 
   joinRoom: (data: { room: string; socket_name: string }) => void;
