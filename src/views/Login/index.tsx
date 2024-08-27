@@ -5,6 +5,8 @@ import RoomList from "../Home/RoomList";
 import { socket } from "../../socket";
 import { RoomListI } from "../../types/room.types";
 import { theme } from "../../theme/theme";
+import { globalState } from "../../store";
+import { useHookstate } from "@hookstate/core";
 
 // import RoomList from "./RoomList";
 // import { RoomListI } from "../../types/room.types";
@@ -30,9 +32,9 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   //   [] | [{ id: number; name: string; email: string }]
   // >([]);
 
-  const validateForm = () => {
-    // debugger;
+  const { socket_name } = useHookstate(globalState);
 
+  const validateName = () => {
     if (name.length <= 0) {
       setNameError("Necesitamos un nombre primero");
       return false;
@@ -42,7 +44,11 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
       setNameError("El nombre tiene que tener menos de 12 caracteres");
       return false;
     }
+    socket_name.set(name);
+    return true;
+  };
 
+  const validateRoomName = () => {
     if (roomName.length <= 0) {
       setRoomNameError("Necesitamos un nombre primero");
       return false;
@@ -57,7 +63,8 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   };
 
   const createRoom = () => {
-    if (validateForm()) {
+    if (validateName() && validateRoomName()) {
+      socket_name.set(name);
       socket.emit("createRoom", { room: roomName, socket_name: name });
       socket.emit("joinRoom", {
         room: roomName,
@@ -100,7 +107,11 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
       {joinRoom ? (
         <div>
           {rooms_list.length > 0 && (
-            <RoomList inputName={name} rooms={rooms_list} />
+            <RoomList
+              validateName={validateName}
+              inputName={name}
+              rooms={rooms_list}
+            />
           )}
         </div>
       ) : (

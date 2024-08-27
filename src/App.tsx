@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { socket } from "./socket";
 // import { useEffect, useState } from "react";
-// import { globalState } from "./store";
-// import { useHookstate } from "@hookstate/core";
+import { globalState } from "./store";
+import { useHookstate } from "@hookstate/core";
 import Blackboard from "./views/Blackboard";
 // import { UserContext } from "./UserContext";
 // import Layout from "./views/Layout";
@@ -14,19 +14,23 @@ import { useEffect, useState } from "react";
 import { RoomListI } from "./types/room.types";
 
 function App() {
-  // const { user } = useHookstate(globalState);
+  const { isConnected } = useHookstate(globalState);
 
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  isConnected.set(socket.connected);
+
+  // const [isConnected, setIsConnected] = useState(socket.connected);
   const [room_list, set_room_list] = useState<RoomListI>([]);
 
   useEffect(() => {
     const onConnect = () => {
       // console.log("connected");
-      setIsConnected(true);
+      // setIsConnected(true);
+      isConnected.set(true);
     };
     const onDisconnect = () => {
       // console.log("disconnected");
-      setIsConnected(false);
+      // setIsConnected(false);
+      isConnected.set(false);
     };
 
     const onRoomList = (roomList: RoomListI) => {
@@ -54,7 +58,7 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<Layout isConnected={isConnected}></Layout>}>
+      <Route element={<Layout></Layout>}>
         <Route path="/" element={<Login rooms_list={room_list} />} />
         <Route path="/room" element={<Blackboard />} />
         {/* <Home /> */}

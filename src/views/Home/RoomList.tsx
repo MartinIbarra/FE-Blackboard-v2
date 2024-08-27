@@ -3,13 +3,18 @@ import Room from "../Room";
 import { Link } from "react-router-dom";
 import { RoomI, RoomListI } from "../../types/room.types";
 import { socket } from "../../socket";
+import { useHookstate } from "@hookstate/core";
+import { globalState } from "../../store";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-const RoomList: React.FC<{ rooms: RoomListI; inputName: string }> = ({
-  rooms,
-  inputName,
-}) => {
+const RoomList: React.FC<{
+  rooms: RoomListI;
+  inputName: string;
+  validateName: () => boolean;
+}> = ({ rooms, inputName, validateName }) => {
+  const { socket_name } = useHookstate(globalState);
+
   return (
     <div className="bg-[#6C5F5B] p-2 rounded-md w-full">
       {rooms &&
@@ -17,7 +22,11 @@ const RoomList: React.FC<{ rooms: RoomListI; inputName: string }> = ({
           <Link
             key={i}
             to={`/room`}
-            onClick={() => {
+            onClick={(e) => {
+              if (!validateName()) {
+                e.preventDefault();
+              }
+              socket_name.set(inputName);
               socket.emit("joinRoom", {
                 room: room.room,
                 socket_name: inputName,
