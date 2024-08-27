@@ -5,12 +5,21 @@ import {
   DibujandoSocketTypes,
   BorradorTypes,
 } from "../../types/socket.types";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { globalState } from "../../store";
+import { useHookstate } from "@hookstate/core";
 // import { useParams } from "react-dom";
 // import ColorPalette from "./ColorPalette";
 // import { UserContext } from "../../UserContext";
 
 const Blackboard = () => {
+  const navigate = useNavigate();
+  const { socket_name } = useHookstate(globalState);
+
+  if (socket_name.get() === "") {
+    navigate("/");
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const borradorRef = useRef(null) as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
