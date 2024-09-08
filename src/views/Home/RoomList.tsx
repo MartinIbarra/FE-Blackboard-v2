@@ -6,8 +6,6 @@ import { socket } from "../../socket";
 import { useHookstate } from "@hookstate/core";
 import { globalState } from "../../store";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 const RoomList: React.FC<{
   rooms: RoomListI;
   inputName: string;

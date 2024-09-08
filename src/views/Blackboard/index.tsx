@@ -75,7 +75,7 @@ const Blackboard = () => {
 
     const dibujandoSocket = (data: DibujandoSocketTypes) => {
       if (ctx) {
-        console.log("dibujandosocket => ", data);
+        // console.log("dibujandosocket => ", data);
         ctx?.beginPath();
         ctx.lineCap = "round";
         ctx.strokeStyle = !data.color ? "#000000" : data.color;

@@ -33,6 +33,12 @@ export interface RoomClientToServerI {
   socket_name: string;
 }
 
+export interface SocketListI {
+  room: string;
+  name: string;
+  id: string;
+}
+
 // export interface RoomList {
 //   name: string;
 // }
@@ -47,6 +53,7 @@ export interface ServerToClientEvents {
   "create-room": (data: RoomServerToClientI) => void;
   "join-room": (data: RoomServerToClientI) => void;
   joinRoom: () => void;
+  newSocketList: (data: SocketListI[]) => void;
 }
 
 export interface ClientToServerEvents {
