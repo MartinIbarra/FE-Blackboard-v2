@@ -12,61 +12,63 @@ import Layout from "./views/Layout";
 import Login from "./views/Login";
 import { useEffect, useState } from "react";
 import { RoomListI } from "./types/room.types";
+import { SocketListI } from "./types/socket.types";
 
 function App() {
-  const { isConnected } = useHookstate(globalState);
+	const { isConnected, socket_list } = useHookstate(globalState);
 
-  isConnected.set(socket.connected);
+	isConnected.set(socket.connected);
 
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-  const [room_list, set_room_list] = useState<RoomListI>([]);
+	// const [isConnected, setIsConnected] = useState(socket.connected);
+	const [room_list, set_room_list] = useState<RoomListI>([]);
 
-  useEffect(() => {
-    const onConnect = () => {
-      // console.log("connected");
-      // setIsConnected(true);
-      isConnected.set(true);
-    };
-    const onDisconnect = () => {
-      // console.log("disconnected");
-      // setIsConnected(false);
-      isConnected.set(false);
-    };
+	useEffect(() => {
+		const onConnect = () => {
+			// console.log("connected");
+			// setIsConnected(true);
+			isConnected.set(true);
+		};
+		const onDisconnect = () => {
+			// console.log("disconnected");
+			// setIsConnected(false);
+			isConnected.set(false);
+		};
 
-    const onRoomList = (roomList: RoomListI) => {
-      console.log("onRoomList =>", roomList);
-      set_room_list(roomList);
-    };
+		const onRoomList = (roomList: RoomListI) => set_room_list(roomList);
 
-    // const onJoinRoom = () => {
-    //   console.log("onJoinRoom =>");
-    // };
+		socket.on("newSocketList", (new_socket_list: SocketListI[]) => {
+			socket_list.set([...new_socket_list]);
+		});
 
-    socket.on("room_list", onRoomList);
-    // socket.on("joinRoom", onJoinRoom);
+		// const onJoinRoom = () => {
+		//   console.log("onJoinRoom =>");
+		// };
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+		socket.on("room_list", onRoomList);
+		// socket.on("joinRoom", onJoinRoom);
 
-    return () => {
-      // socket.off("joinRoom", onJoinRoom);
-      socket.off("room_list", onRoomList);
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-    };
-  }, []);
+		socket.on("connect", onConnect);
+		socket.on("disconnect", onDisconnect);
 
-  return (
-    <Routes>
-      <Route element={<Layout></Layout>}>
-        <Route path="/" element={<Login rooms_list={room_list} />} />
-        <Route path="/room" element={<Blackboard />} />
-        {/* <Home /> */}
-      </Route>
-      {/* <Route path="/" element={<Home />} /> */}
-      {/* <Route path="/login" component={Login} /> */}
-    </Routes>
-  );
+		return () => {
+			socket.off("newSocketList");
+			socket.off("room_list", onRoomList);
+			socket.off("connect", onConnect);
+			socket.off("disconnect", onDisconnect);
+		};
+	}, []);
+
+	return (
+		<Routes>
+			<Route element={<Layout></Layout>}>
+				<Route path="/" element={<Login rooms_list={room_list} />} />
+				<Route path="/room" element={<Blackboard />} />
+				{/* <Home /> */}
+			</Route>
+			{/* <Route path="/" element={<Home />} /> */}
+			{/* <Route path="/login" component={Login} /> */}
+		</Routes>
+	);
 }
 
 export default App;
