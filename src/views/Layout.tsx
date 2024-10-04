@@ -19,7 +19,7 @@ const Layout: React.FC<{ isConnected?: boolean }> = () => {
 
 	return (
 		<div className="flex flex-col h-screen w-screen">
-			<nav className="flex h-10 w-full justify-end bg-[#DC5F00] px-4 py-2">
+			<nav className="flex w-full justify-end bg-[#DC5F00] px-4 py-2">
 				{isConnected.get() && (
 					<Button
 						className="flex items-center"

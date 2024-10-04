@@ -63,6 +63,7 @@ function App() {
 			<Route element={<Layout></Layout>}>
 				<Route path="/" element={<Login rooms_list={room_list} />} />
 				<Route path="/room" element={<Blackboard />} />
+				<Route path="/oauth" element={<>autenticado papa</>} />
 				{/* <Home /> */}
 			</Route>
 			{/* <Route path="/" element={<Home />} /> */}

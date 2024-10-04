@@ -1,19 +1,24 @@
 import React from "react";
+// import googleSSOIcon from "../assets/icons/google-SSO.png";
 // import { useNavigate } from "react-router-dom";
 
-const GoogleSignInBtn = () => {
+const GoogleSignInBtn: React.FC = () => {
 	const auth = async () => {
-		const response = await fetch("http://localhost:5000/", { method: "post" });
+		const response = await fetch("http://localhost:5000/request/", { method: "post" });
 		// console.log(response);
 		const data = await response.json();
-		window.location.href = data.url;
+
+		const left = screen.width / 2 - 250;
+		const top = screen.height / 2 - 300;
+		window.open(data.url, "_blank", `width=500,height=600,left=${left},top=${top}`);
+		//		window.location.href = data.url;
 	};
 
 	return (
 		<button className="gsi-material-button" onClick={() => auth()}>
 			<div className="gsi-material-button-state"></div>
 			<div className="gsi-material-button-content-wrapper">
-				<div className="gsi-material-button-icon">
+				<div className="gsi-material-button-icon" style={{ boxSizing: "unset" }}>
 					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlnsXlink="http://www.w3.org/1999/xlink" style={{ display: "block" }}>
 						<path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
 						<path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
