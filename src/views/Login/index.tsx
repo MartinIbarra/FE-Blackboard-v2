@@ -7,6 +7,7 @@ import { RoomListI } from "../../types/room.types";
 import { theme } from "../../theme/theme";
 import { globalState } from "../../store";
 import { useHookstate } from "@hookstate/core";
+import GoogleSignInBtn from "../../components/GoogleSignInBtn";
 
 // import RoomList from "./RoomList";
 // import { RoomListI } from "../../types/room.types";
@@ -107,6 +108,7 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
 							Create
 						</Button>
 					)}
+					<GoogleSignInBtn />
 				</div>
 			</div>
 			<div className="flex w-60">

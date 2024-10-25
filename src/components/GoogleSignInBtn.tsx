@@ -3,6 +3,7 @@ import React from "react";
 // import { useNavigate } from "react-router-dom";
 
 const GoogleSignInBtn: React.FC = () => {
+	// const navigate = useNavigate();
 	const auth = async () => {
 		const response = await fetch("http://localhost:5000/request/", { method: "post" });
 		// console.log(response);
@@ -10,7 +11,14 @@ const GoogleSignInBtn: React.FC = () => {
 
 		const left = screen.width / 2 - 250;
 		const top = screen.height / 2 - 300;
-		window.open(data.url, "_blank", `width=500,height=600,left=${left},top=${top}`);
+		const popup_google_sso = window.open(data.url, "_blank", `width=500,height=600,left=${left},top=${top}`);
+		if (popup_google_sso?.closed) {
+			console.log("asdasdasd");
+			window.location.reload();
+		}
+		// window.location.reload();
+		// popup_google_sso?.addEventListener("close", () => {
+		// });
 		//		window.location.href = data.url;
 	};
 
@@ -27,7 +35,9 @@ const GoogleSignInBtn: React.FC = () => {
 						<path fill="none" d="M0 0h48v48H0z"></path>
 					</svg>
 				</div>
-				<span style={{}}>Sign in with Google</span>
+				<span className="pr-3" style={{}}>
+					Sign in with Google
+				</span>
 			</div>
 		</button>
 	);

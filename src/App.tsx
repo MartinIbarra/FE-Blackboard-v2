@@ -22,6 +22,7 @@ function App() {
 	// const [isConnected, setIsConnected] = useState(socket.connected);
 	const [room_list, set_room_list] = useState<RoomListI>([]);
 
+	// Separar en un custom hook
 	useEffect(() => {
 		const onConnect = () => {
 			// console.log("connected");
