@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useHookstate } from '@hookstate/core'
+import { globalState } from '../../store/index';
 
-const UserAvatar: React.FC<{ googleCookies?: string }> = () => {
-	const [userCookies, setUserCookies] = useState<{ name: string; family_name: string; picture: string } | null>(null);
+const UserAvatar: React.FC = () => {
 
-	const readGoogleUserCookie = () => {
-		if (document.cookie !== "") {
-			const cookies = decodeURIComponent(document.cookie).slice(7);
-			setUserCookies(JSON.parse(cookies));
-		}
-	};
+  const { userCredentials } = useHookstate(globalState);
 
-	useEffect(() => {
-		readGoogleUserCookie();
-		console.log(userCookies);
-	}, []);
+  //useEffect(() => {
+  //  if(document.cookie !== ""){
+  //    const cookie = decodeURIComponent(document.cookie).slice(7);
+  //    setUserCookies(JSON.parse(cookie));
+  //  }
+  //}, [])
 
-	return <div>{userCookies && <img className="w-9 h-9 rounded-full" src={userCookies.picture} alt={userCookies.name} />}</div>;
+  return <div>{userCredentials.get().name !== '' && <img className="w-9 h-9 rounded-full" src={userCredentials.get().picture} alt={userCredentials.get().name} />}</div>;
 };
 
 export default UserAvatar;
