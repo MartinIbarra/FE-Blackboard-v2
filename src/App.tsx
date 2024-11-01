@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { socket } from "./socket";
 // import { useEffect, useState } from "react";
 import { globalState } from "./store";
@@ -22,7 +22,6 @@ const App = () => {
 
   useLayoutEffect(() => {
     const user = window.localStorage.getItem('user')
-    console.log(`user ${user}`);
 
     if (user) {
       userCredentials.set(JSON.parse(user))
@@ -67,11 +66,20 @@ const App = () => {
     };
   }, []);
 
+  const ProtectedRoute = ({ isAllowed, redirectPath = '/' }: { isAllowed: boolean; redirectPath: string }) => {
+    if (!isAllowed) {
+      return <Navigate to={redirectPath} replace />;
+    }
+    return <Outlet />;
+  };
+
   return (
     <Routes>
       <Route element={<Layout></Layout>}>
         <Route path="/" element={<Login rooms_list={room_list} />} />
-        <Route path="/room" element={<Blackboard />} />
+        <Route element={<ProtectedRoute isAllowed={userCredentials.get().loaded} />}>
+          <Route path="/room" element={<Blackboard />} />
+        </Route>
       </Route>
     </Routes>
   );

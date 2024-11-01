@@ -39,10 +39,6 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
 
   const credentials = userCredentials.get()
 
-  useEffect(() => {
-    console.log(`credentials => ${credentials}`);
-  }, [credentials])
-
   return (
     <div className="flex justify-center w-full p-4">
       <div className="flex p-4 justify-center w-full">
