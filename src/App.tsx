@@ -66,7 +66,7 @@ const App = () => {
     };
   }, []);
 
-  const ProtectedRoute = ({ isAllowed, redirectPath = '/' }: { isAllowed: boolean; redirectPath: string }) => {
+  const ProtectedRoute = ({ isAllowed, redirectPath = '/' }: { isAllowed: boolean; redirectPath?: string }) => {
     if (!isAllowed) {
       return <Navigate to={redirectPath} replace />;
     }
