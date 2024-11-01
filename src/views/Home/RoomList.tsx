@@ -6,11 +6,7 @@ import { socket } from "../../socket";
 import { useHookstate } from "@hookstate/core";
 import { globalState } from "../../store";
 
-const RoomList: React.FC<{
-  rooms: RoomListI;
-  inputName: string;
-  validateName: () => boolean;
-}> = ({ rooms, inputName, validateName }) => {
+const RoomList: React.FC<{ rooms: RoomListI; inputName: string; }> = ({ rooms, inputName }) => {
   const { socket_name } = useHookstate(globalState);
 
   return (
@@ -20,10 +16,7 @@ const RoomList: React.FC<{
           <Link
             key={i}
             to={`/room`}
-            onClick={(e) => {
-              if (!validateName()) {
-                e.preventDefault();
-              }
+            onClick={() => {
               socket_name.set(inputName);
               socket.emit("joinRoom", {
                 room: room.room,

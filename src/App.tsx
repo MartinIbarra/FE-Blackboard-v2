@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { socket } from "./socket";
 // import { useEffect, useState } from "react";
 import { globalState } from "./store";
@@ -10,20 +10,29 @@ import Blackboard from "./views/Blackboard";
 import Layout from "./views/Layout";
 // import Signup from "./views/Signup";
 import Login from "./views/Login";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { RoomListI } from "./types/room.types";
+import { SocketListI } from "./types/socket.types";
 
-function App() {
-  const { isConnected } = useHookstate(globalState);
-
+const App = () => {
+  const { isConnected, socket_list } = useHookstate(globalState);
+  const [room_list, set_room_list] = useState<RoomListI>([]);
+  const { userCredentials } = useHookstate(globalState);
   isConnected.set(socket.connected);
 
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-  const [room_list, set_room_list] = useState<RoomListI>([]);
+  useLayoutEffect(() => {
+    const user = window.localStorage.getItem('user')
 
+    if (user) {
+      userCredentials.set(JSON.parse(user))
+      console.log(`userCredentials => ${userCredentials.get()}`);
+    }
+  }, [])
+
+  // Separar en un custom hook
   useEffect(() => {
     const onConnect = () => {
-      // console.log("connected");
+      console.log("connected");
       // setIsConnected(true);
       isConnected.set(true);
     };
@@ -33,10 +42,11 @@ function App() {
       isConnected.set(false);
     };
 
-    const onRoomList = (roomList: RoomListI) => {
-      console.log("onRoomList =>", roomList);
-      set_room_list(roomList);
-    };
+    const onRoomList = (roomList: RoomListI) => set_room_list(roomList);
+
+    socket.on("newSocketList", (new_socket_list: SocketListI[]) => {
+      socket_list.set([...new_socket_list]);
+    });
 
     // const onJoinRoom = () => {
     //   console.log("onJoinRoom =>");
@@ -49,22 +59,28 @@ function App() {
     socket.on("disconnect", onDisconnect);
 
     return () => {
-      // socket.off("joinRoom", onJoinRoom);
+      socket.off("newSocketList");
       socket.off("room_list", onRoomList);
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
     };
   }, []);
 
+  const ProtectedRoute = ({ isAllowed, redirectPath = '/' }: { isAllowed: boolean; redirectPath: string }) => {
+    if (!isAllowed) {
+      return <Navigate to={redirectPath} replace />;
+    }
+    return <Outlet />;
+  };
+
   return (
     <Routes>
       <Route element={<Layout></Layout>}>
         <Route path="/" element={<Login rooms_list={room_list} />} />
-        <Route path="/room" element={<Blackboard />} />
-        {/* <Home /> */}
+        <Route element={<ProtectedRoute isAllowed={userCredentials.get().loaded} />}>
+          <Route path="/room" element={<Blackboard />} />
+        </Route>
       </Route>
-      {/* <Route path="/" element={<Home />} /> */}
-      {/* <Route path="/login" component={Login} /> */}
     </Routes>
   );
 }
