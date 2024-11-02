@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FloatingLabel, Button } from "flowbite-react";
 import RoomList from "../Home/RoomList";
@@ -36,8 +36,6 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
       navigate("/room", { state: { room: roomName, socket_name: userCredentials.get()?.name } });
     }
   };
-
-  const credentials = userCredentials.get()
 
   return (
     <div className="flex justify-center w-full p-4">
