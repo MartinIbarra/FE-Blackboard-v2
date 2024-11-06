@@ -41,7 +41,9 @@ const App = () => {
       isConnected.set(false);
     };
 
-    const onRoomList = (roomList: RoomListI) => set_room_list(roomList);
+    const onRoomList = (roomList: RoomListI) => {
+      set_room_list(roomList);
+    }
 
     socket.on("newSocketList", (new_socket_list: SocketListI[]) => {
       socket_list.set([...new_socket_list]);

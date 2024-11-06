@@ -31,7 +31,7 @@ const Blackboard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useLocation();
 
-  // console.log("state =>", state);
+   //console.log("state =>", state);
   // const { user, setUser } = useContext(UserContext);
   // let { room_id, room_name } = useParams();
 
@@ -187,9 +187,9 @@ const Blackboard = () => {
         dibujandoSocket(data);
       });
 
-      socket.on("borrando", (data: BorradorTypes) => {
-        borrandoSocket(data);
-      });
+      //socket.on("borrando", (data: BorradorTypes) => {
+      //  borrandoSocket(data);
+      //});
 
       // socket.on("changeColor", (data: string) => setColor(data));
     } else {

@@ -54,7 +54,6 @@ export interface ServerToClientEvents {
   dibujandoSocket: (data: DibujandoSocketTypes) => void;
   borrando: (data: BorradorTypes) => void;
   changeColor: (data: string) => void;
-  roomsList: (rooms: string[]) => void;
   room_list: (data: RoomI[]) => void;
   errorRoomExist: () => void;
   joinRoom: () => void;
@@ -63,12 +62,6 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  //join: (obj: {
-  //  name: string;
-  //  room_id: string;
-  //  user_id: string;
-  //  room: string;
-  //}) => void;
   joinRoom: (data: { room: string; socket_cred: SocketCredentialsI }) => void;
   userLogin: (data:SocketCredentialsI) => void;
   createRoom: (data: RoomNameI) => void;
@@ -76,5 +69,4 @@ export interface ClientToServerEvents {
   borrando: (data: BorradorTypes) => void;
   disconnect: () => void;
   leaveRoom: (data: RoomNameI) => void;
-  // createRoom: (room: string) => void;
 }
