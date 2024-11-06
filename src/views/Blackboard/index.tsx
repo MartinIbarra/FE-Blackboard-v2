@@ -9,15 +9,15 @@ import {
   useLocation,
   // useNavigate
 } from "react-router-dom";
-// import { globalState } from "../../store";
-// import { useHookstate } from "@hookstate/core";
+ import { globalState } from "../../store";
+ import { useHookstate } from "@hookstate/core";
 // import { useParams } from "react-dom";
 // import ColorPalette from "./ColorPalette";
 // import { UserContext } from "../../UserContext";
 
 const Blackboard = () => {
   // const navigate = useNavigate();
-  // const { socket_name } = useHookstate(globalState);
+   const { userCredentials } = useHookstate(globalState);
 
   // if (socket_name.get() === "") {
   //   navigate("/");
@@ -106,7 +106,7 @@ const Blackboard = () => {
         obtenerPosicion(event);
         // console.log("state en dibujandoSocket => ", state);
         socket.emit("dibujandoSocket", {
-          origin: state.socket_name,
+          origin: userCredentials.get().name,
           oldCoord,
           coordenadas,
           room: state.room,
@@ -183,7 +183,7 @@ const Blackboard = () => {
         false
       );
       socket.on("dibujandoSocket", (data: DibujandoSocketTypes) => {
-        // console.log("data => ", data);
+         //console.log("data => ", data);
         dibujandoSocket(data);
       });
 
@@ -193,6 +193,7 @@ const Blackboard = () => {
 
       // socket.on("changeColor", (data: string) => setColor(data));
     } else {
+      // TODO Add Error screen
       throw new Error("Could not get context");
     }
 
@@ -205,8 +206,7 @@ const Blackboard = () => {
   return (
     <div className="max-w-fit m-auto">
       {/* <ColorPalette getColor={getColor} user={socket} /> */}
-      <span id="borrador" ref={borradorRef}></span>
-      <span id="pen" ref={penRef}></span>
+      {/*<span id="pen" ref={penRef}></span> */}
       <canvas
         id="canvas"
         width="800"

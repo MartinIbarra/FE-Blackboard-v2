@@ -20,7 +20,7 @@ export interface DibujandoSocketTypes {
 
 export interface RoomNameI {
   room: string;
-  socket_name: string;
+  socket_cred: SocketCredentialsI;
 }
 
 export interface RoomServerToClientI {
@@ -39,9 +39,16 @@ export interface SocketListI {
   id: string;
 }
 
-// export interface RoomList {
-//   name: string;
-// }
+export interface SocketCredentialsI {
+  loaded: boolean;
+  email: string;
+  exp?: number;
+  family_name: string;
+  given_name: string;
+  name: string;
+  picture: string;
+}
+
 
 export interface ServerToClientEvents {
   dibujandoSocket: (data: DibujandoSocketTypes) => void;
@@ -50,29 +57,24 @@ export interface ServerToClientEvents {
   roomsList: (rooms: string[]) => void;
   room_list: (data: RoomI[]) => void;
   errorRoomExist: () => void;
-  "create-room": (data: RoomServerToClientI) => void;
-  "join-room": (data: RoomServerToClientI) => void;
   joinRoom: () => void;
   newSocketList: (data: SocketListI[]) => void;
+  leaveRoom: (data: string) => void;
 }
 
 export interface ClientToServerEvents {
-  join: (obj: {
-    name: string;
-    room_id: string;
-    user_id: string;
-    room: string;
-  }) => void;
-
-  joinRoom: (data: { room: string; socket_name: string }) => void;
-
-  "create-room": (data: RoomClientToServerI) => void;
-  "join-room": (data: RoomClientToServerI) => void;
-
+  //join: (obj: {
+  //  name: string;
+  //  room_id: string;
+  //  user_id: string;
+  //  room: string;
+  //}) => void;
+  joinRoom: (data: { room: string; socket_cred: SocketCredentialsI }) => void;
+  userLogin: (data:SocketCredentialsI) => void;
   createRoom: (data: RoomNameI) => void;
-
   dibujandoSocket: (data: DibujandoSocketTypes) => void;
   borrando: (data: BorradorTypes) => void;
   disconnect: () => void;
+  leaveRoom: (data: RoomNameI) => void;
   // createRoom: (room: string) => void;
 }

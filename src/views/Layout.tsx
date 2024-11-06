@@ -6,13 +6,13 @@ import { useHookstate } from "@hookstate/core";
 import { globalState } from "../store";
 import UserAvatar from "../components/UserAvatar";
 import GoogleSignInBtn from "../components/GoogleSignInBtn";
-
+import UsersList from "../components/UsersList";
 
 const Layout: React.FC = () => {
   const {
     // isConnected,
     // socket_name,
-    socket_list,
+    // socket_list,
     userCredentials
   } = useHookstate(globalState);
   // isConnected.set(socket.connected);
@@ -39,19 +39,9 @@ const Layout: React.FC = () => {
           </div>
         )}
         <div className="flex gap-1">
-          {socket_list.get().length > 0 &&
-            socket_list.get().map((user, i) => {
-              if (user.name !== userCredentials.get().name) {
-                return (
-                  <div className="flex gap-1 items-center" key={i}>
-                    <span className="flex rounded-full bg-green-500 w-5 h-5"></span> <p className="flex">{user.name}</p>
-                  </div>
-                );
-              }
-            })}
+         <UsersList />
         </div>
       </div>
-
       <Outlet />
     </div>
   );

@@ -30,10 +30,15 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   };
 
   const createRoom = () => {
-    if (validateRoomName()) {
-      socket.emit("createRoom", { room: roomName, socket_name: userCredentials.get()?.name });
-      socket.emit("joinRoom", { room: roomName, socket_name: userCredentials.get()?.name });
-      navigate("/room", { state: { room: roomName, socket_name: userCredentials.get()?.name } });
+    if (validateRoomName() && userCredentials.get().name && userCredentials.get().name !== '') {
+      console.log(`name => ${userCredentials.get().name}`);
+       
+      console.log(`roomName => ${roomName}`);
+      socket.emit("createRoom", { room: roomName, socket_cred: userCredentials.get()});
+      socket.emit("joinRoom", { room: roomName, socket_cred: userCredentials.get()});
+      navigate("/room", { state: { room: roomName } });
+    } else {
+      setRoomNameError('Name not valid.');
     }
   };
 
@@ -50,8 +55,8 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
             <FloatingLabel value={roomName} className="text-white transition ease-in duration-400 focus:border-[#DC5F00]" onChange={(e) => setRoomName(e?.target.value)} variant="standard" theme={theme} label="Create room" />
             {roomNameError.length > 0 && <span className="text-red-700"> {roomNameError}</span>}
           </div>
-          <div>{rooms_list.length > 0 && <RoomList inputName={roomName} rooms={rooms_list} />}</div>
-          <Button className="w-32 bg-primary focus:border-none enabled:border-none" onClick={() => createRoom()}>
+          <div>{rooms_list.length > 0 && <RoomList rooms={rooms_list} />}</div>
+          <Button className="w-32 bg-primary focus:border-none enabled:border-none" onKeyDown={() => setRoomNameError('')} onClick={() => createRoom()}>
             Create
           </Button>
         </div>

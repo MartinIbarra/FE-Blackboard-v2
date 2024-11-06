@@ -6,8 +6,8 @@ import { socket } from "../../socket";
 import { useHookstate } from "@hookstate/core";
 import { globalState } from "../../store";
 
-const RoomList: React.FC<{ rooms: RoomListI; inputName: string; }> = ({ rooms, inputName }) => {
-  const { socket_name } = useHookstate(globalState);
+const RoomList: React.FC<{ rooms: RoomListI; }> = ({ rooms }) => {
+  const { userCredentials } = useHookstate(globalState);
 
   return (
     <div className="bg-[#6C5F5B] p-2 rounded-md w-full">
@@ -17,13 +17,12 @@ const RoomList: React.FC<{ rooms: RoomListI; inputName: string; }> = ({ rooms, i
             key={i}
             to={`/room`}
             onClick={() => {
-              socket_name.set(inputName);
               socket.emit("joinRoom", {
                 room: room.room,
-                socket_name: inputName,
+                socket_cred: userCredentials.get(),
               });
             }}
-            state={{ room: room.room, socket_name: inputName }}
+            state={{ room: room.room }}
           >
             <Room name={room.room} roomID={i} roomsLength={rooms.length} />
           </Link>

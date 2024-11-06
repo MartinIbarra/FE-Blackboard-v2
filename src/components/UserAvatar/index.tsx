@@ -6,14 +6,15 @@ const UserAvatar: React.FC = () => {
 
   const { userCredentials } = useHookstate(globalState);
 
-  //useEffect(() => {
-  //  if(document.cookie !== ""){
-  //    const cookie = decodeURIComponent(document.cookie).slice(7);
-  //    setUserCookies(JSON.parse(cookie));
-  //  }
-  //}, [])
+  if (userCredentials.get().name && userCredentials.get().name !== '') {
+    return (
+      <div>
+        <img className="w-9 h-9 rounded-full" src={userCredentials.get().picture} alt={userCredentials.get().name} />
+      </div>
+    );
+  }
 
-  return <div>{userCredentials.get().name !== '' && <img className="w-9 h-9 rounded-full" src={userCredentials.get().picture} alt={userCredentials.get().name} />}</div>;
+  return null;
 };
 
 export default UserAvatar;

@@ -25,7 +25,7 @@ const App = () => {
 
     if (user) {
       userCredentials.set(JSON.parse(user))
-      console.log(`userCredentials => ${userCredentials.get()}`);
+      console.log(`userCredentials => ${JSON.stringify(userCredentials.get())}`);
     }
   }, [])
 
@@ -33,7 +33,6 @@ const App = () => {
   useEffect(() => {
     const onConnect = () => {
       console.log("connected");
-      // setIsConnected(true);
       isConnected.set(true);
     };
     const onDisconnect = () => {
