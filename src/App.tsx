@@ -3,36 +3,47 @@ import { socket } from "./socket";
 // import { useEffect, useState } from "react";
 import { globalState } from "./store";
 import { useHookstate } from "@hookstate/core";
-import Blackboard from "./views/Blackboard";
+// import Blackboard from "./views/Blackboard";
 // import { UserContext } from "./UserContext";
 // import Layout from "./views/Layout";
 // import Home from "./views/Home";
 import Layout from "./views/Layout";
 // import Signup from "./views/Signup";
 import Login from "./views/Login";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RoomListI } from "./types/room.types";
 import { SocketListI } from "./types/socket.types";
+import Home from "./views/Home";
+
+const ProtectedRoute = ({
+  isAllowed,
+  redirectPath = "/",
+}: {
+  isAllowed: boolean;
+  redirectPath?: string;
+}) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return <Outlet />;
+};
 
 const App = () => {
-  const { isConnected, socket_list } = useHookstate(globalState);
+  const { isConnected, socket_list, userCredentials } =
+    useHookstate(globalState);
   const [room_list, set_room_list] = useState<RoomListI>([]);
-  const { userCredentials } = useHookstate(globalState);
   isConnected.set(socket.connected);
 
-  useLayoutEffect(() => {
-    const user = window.localStorage.getItem('user')
-
-    if (user) {
-      userCredentials.set(JSON.parse(user))
-      console.log(`userCredentials => ${JSON.stringify(userCredentials.get())}`);
-    }
-  }, [])
+  const user = JSON.parse(window.localStorage.getItem("user") || "[]");
+  //  userCredentials.set(JSON.parse(user));
 
   // Separar en un custom hook
   useEffect(() => {
+    if (user !== "[]") {
+      userCredentials.set(user);
+    }
     const onConnect = () => {
-      console.log("connected");
+      // console.log("connected");
       isConnected.set(true);
     };
     const onDisconnect = () => {
@@ -43,7 +54,7 @@ const App = () => {
 
     const onRoomList = (roomList: RoomListI) => {
       set_room_list(roomList);
-    }
+    };
 
     socket.on("newSocketList", (new_socket_list: SocketListI[]) => {
       socket_list.set([...new_socket_list]);
@@ -65,25 +76,18 @@ const App = () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
     };
-  }, []);
-
-  const ProtectedRoute = ({ isAllowed, redirectPath = '/' }: { isAllowed: boolean; redirectPath?: string }) => {
-    if (!isAllowed) {
-      return <Navigate to={redirectPath} replace />;
-    }
-    return <Outlet />;
-  };
+  }, [isConnected, socket_list, user]);
 
   return (
     <Routes>
       <Route element={<Layout></Layout>}>
         <Route path="/" element={<Login rooms_list={room_list} />} />
-        <Route element={<ProtectedRoute isAllowed={userCredentials.get().loaded} />}>
-          <Route path="/room" element={<Blackboard />} />
+        <Route element={<ProtectedRoute isAllowed={user.loaded} />}>
+          <Route path="/room" element={<Home />} />
         </Route>
       </Route>
     </Routes>
   );
-}
+};
 
 export default App;

@@ -49,6 +49,11 @@ export interface SocketCredentialsI {
   picture: string;
 }
 
+export interface SocketMsgI {
+  room: string;
+  msg: string;
+  socket_email: string;
+}
 
 export interface ServerToClientEvents {
   dibujandoSocket: (data: DibujandoSocketTypes) => void;
@@ -59,14 +64,18 @@ export interface ServerToClientEvents {
   joinRoom: () => void;
   newSocketList: (data: SocketListI[]) => void;
   leaveRoom: (data: string) => void;
+  socketMsg: (data: SocketMsgI) => void;
+  // outcommingMsg: (data: SocketMsgI) => void;
 }
 
 export interface ClientToServerEvents {
   joinRoom: (data: { room: string; socket_cred: SocketCredentialsI }) => void;
-  userLogin: (data:SocketCredentialsI) => void;
+  userLogin: (data: SocketCredentialsI) => void;
   createRoom: (data: RoomNameI) => void;
   dibujandoSocket: (data: DibujandoSocketTypes) => void;
   borrando: (data: BorradorTypes) => void;
   disconnect: () => void;
   leaveRoom: (data: RoomNameI) => void;
+  socketMsg: (data: SocketMsgI) => void;
+  // outcommingMsg: (data: SocketMsgI) => void;
 }

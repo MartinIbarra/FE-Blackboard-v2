@@ -30,15 +30,24 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   };
 
   const createRoom = () => {
-    if (validateRoomName() && userCredentials.get().name && userCredentials.get().name !== '') {
+    if (
+      validateRoomName() &&
+      userCredentials.get().name &&
+      userCredentials.get().name !== ""
+    ) {
       console.log(`name => ${userCredentials.get().name}`);
-       
       console.log(`roomName => ${roomName}`);
-      socket.emit("createRoom", { room: roomName, socket_cred: userCredentials.get()});
-      socket.emit("joinRoom", { room: roomName, socket_cred: userCredentials.get()});
+      socket.emit("createRoom", {
+        room: roomName,
+        socket_cred: userCredentials.get(),
+      });
+      socket.emit("joinRoom", {
+        room: roomName,
+        socket_cred: userCredentials.get(),
+      });
       navigate("/room", { state: { room: roomName } });
     } else {
-      setRoomNameError('Name not valid.');
+      setRoomNameError("Name not valid.");
     }
   };
 
@@ -52,23 +61,29 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
             </span>
           </div>
           <div className="relative z-0 w-full mb-5 group">
-            <FloatingLabel value={roomName} className="text-white transition ease-in duration-400 focus:border-[#DC5F00]" onChange={(e) => setRoomName(e?.target.value)} variant="standard" theme={theme} label="Create room" />
-            {roomNameError.length > 0 && <span className="text-red-700"> {roomNameError}</span>}
+            <FloatingLabel
+              value={roomName}
+              className="text-white transition ease-in duration-400 focus:border-[#DC5F00]"
+              onChange={(e) => setRoomName(e?.target.value)}
+              variant="standard"
+              theme={theme}
+              label="Create room"
+            />
+            {roomNameError.length > 0 && (
+              <span className="text-red-700"> {roomNameError}</span>
+            )}
           </div>
-          <div>{rooms_list.length > 0 && <RoomList rooms={rooms_list} />}</div>
-          <Button className="w-32 bg-primary focus:border-none enabled:border-none" onKeyDown={() => setRoomNameError('')} onClick={() => createRoom()}>
+          <Button
+            className="w-32 bg-primary focus:border-none enabled:border-none"
+            onKeyDown={() => setRoomNameError("")}
+            onClick={() => createRoom()}
+          >
             Create
           </Button>
         </div>
       </div>
-      <div className="flex w-60">
-        <div className="flex flex-col py-2 px-4 bg-gray-300 gap-2">
-          {rooms_list?.map((e, i) => (
-            <span className="flex" key={i}>
-              {e.room}
-            </span>
-          ))}
-        </div>
+      <div className="flex p-2 w-1/6">
+        {rooms_list.length > 0 && <RoomList rooms={rooms_list} />}
       </div>
     </div>
   );

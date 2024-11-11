@@ -3,25 +3,22 @@ import { socket } from "../../socket";
 import {
   CoordenadasTypes,
   DibujandoSocketTypes,
-  BorradorTypes,
+  // BorradorTypes,
 } from "../../types/socket.types";
 import {
   useLocation,
   // useNavigate
 } from "react-router-dom";
- import { globalState } from "../../store";
- import { useHookstate } from "@hookstate/core";
+import { globalState } from "../../store";
+import { useHookstate } from "@hookstate/core";
+// import UsersChat from "../UsersChat";
 // import { useParams } from "react-dom";
 // import ColorPalette from "./ColorPalette";
 // import { UserContext } from "../../UserContext";
 
 const Blackboard = () => {
   // const navigate = useNavigate();
-   const { userCredentials } = useHookstate(globalState);
-
-  // if (socket_name.get() === "") {
-  //   navigate("/");
-  // }
+  const { userCredentials } = useHookstate(globalState);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const borradorRef = useRef(null) as any;
@@ -31,7 +28,7 @@ const Blackboard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useLocation();
 
-   //console.log("state =>", state);
+  // console.log("state =>", state);
   // const { user, setUser } = useContext(UserContext);
   // let { room_id, room_name } = useParams();
 
@@ -72,10 +69,10 @@ const Blackboard = () => {
       ctx?.clearRect(pos.x - 50, pos.y - 50, 100, 100);
     };
 
-    const borrandoSocket = (data: { pos: CoordenadasTypes }) => {
-      ctx?.clearRect(data.pos.x - 50, data.pos.y - 50, 100, 100);
-    };
-
+    // const borrandoSocket = (data: { pos: CoordenadasTypes }) => {
+    //   ctx?.clearRect(data.pos.x - 50, data.pos.y - 50, 100, 100);
+    // };
+    //
     const dibujandoSocket = (data: DibujandoSocketTypes) => {
       if (ctx) {
         // console.log("dibujandosocket => ", data);
@@ -144,7 +141,7 @@ const Blackboard = () => {
             borrador = true;
             pen = false;
           },
-          false
+          false,
         );
 
         penRef.current.addEventListener(
@@ -153,7 +150,7 @@ const Blackboard = () => {
             borrador = false;
             pen = true;
           },
-          false
+          false,
         );
       }
 
@@ -180,10 +177,10 @@ const Blackboard = () => {
             borrar(e);
           }
         },
-        false
+        false,
       );
       socket.on("dibujandoSocket", (data: DibujandoSocketTypes) => {
-         //console.log("data => ", data);
+        //console.log("data => ", data);
         dibujandoSocket(data);
       });
 
@@ -204,18 +201,20 @@ const Blackboard = () => {
     };
   }, []);
   return (
-    <div className="max-w-fit m-auto">
+    <div className="flex">
       {/* <ColorPalette getColor={getColor} user={socket} /> */}
       {/*<span id="pen" ref={penRef}></span> */}
-      <canvas
-        id="canvas"
-        width="800"
-        height="600"
-        className="bg-white"
-        ref={canvasRef}
-      >
-        Tu navegador no es compatible
-      </canvas>
+      <div className="flex m-auto">
+        <canvas
+          id="canvas"
+          width="800"
+          height="600"
+          className="bg-white flex"
+          ref={canvasRef}
+        >
+          Tu navegador no es compatible
+        </canvas>
+      </div>
     </div>
   );
 };

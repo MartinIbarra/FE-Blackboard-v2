@@ -6,11 +6,12 @@ import { socket } from "../../socket";
 import { useHookstate } from "@hookstate/core";
 import { globalState } from "../../store";
 
-const RoomList: React.FC<{ rooms: RoomListI; }> = ({ rooms }) => {
+const RoomList: React.FC<{ rooms: RoomListI }> = ({ rooms }) => {
   const { userCredentials } = useHookstate(globalState);
 
   return (
-    <div className="bg-[#6C5F5B] p-2 rounded-md w-full">
+    <div className=" p-2 rounded-md w-full">
+      <h2 className="text-primary"> Rooms </h2>
       {rooms &&
         rooms.map((room: RoomI, i: number) => (
           <Link
