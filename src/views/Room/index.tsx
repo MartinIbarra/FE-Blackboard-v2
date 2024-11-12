@@ -5,8 +5,6 @@ const Room: React.FC<{ name: string; roomID: number; roomsLength: number }> = ({
   roomID,
   roomsLength,
 }) => {
-  // console.log("roomID =>", roomID);
-  // console.log("roomsLength =>", roomsLength);
   return (
     <div
       className={`${

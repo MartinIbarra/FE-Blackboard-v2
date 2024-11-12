@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom";
 import { globalState } from "../../store";
 import { useHookstate } from "@hookstate/core";
 import ChatMessages from "./ChatMessages";
+import { SubmitBtn } from "../../components/ChatForm/SubmitBtn";
+import { ChatInput } from "../../components/ChatForm/ChatInput";
 
 const UsersChat: React.FC = () => {
   const [input_msg, set_input_msg] = useState<string>("");
   const { userCredentials } = useHookstate(globalState);
-  // const [isFromSocket, setIsFromSocket] = useState<boolean | null>(null);
-  // const [socketMsg, setSocketMsg] = useState<string>("");
   const [msgList, setMsgList] = useState<SocketMsgListI[] | []>([]);
   const { state } = useLocation();
 
@@ -44,6 +44,10 @@ const UsersChat: React.FC = () => {
     set_input_msg("");
   };
 
+  const onChangeInputHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+    set_input_msg(event?.target.value || "-- No input --");
+  };
+
   return (
     <div className="flex flex-col w-full h-full justify-end">
       {msgList.length > 0 &&
@@ -52,15 +56,12 @@ const UsersChat: React.FC = () => {
           return <ChatMessages key={idx} socket_msg={msg} />;
         })}
       <form className="flex w-full" onSubmit={handleSubmit}>
-        <input
-          className="flex w-full text-black"
-          value={input_msg}
+        <ChatInput
           type="text"
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            set_input_msg(event?.target?.value || "")
-          }
+          value={input_msg}
+          onChange={onChangeInputHandler}
         />
-        <button type="submit">Send</button>
+        <SubmitBtn label="send" />
       </form>
     </div>
   );

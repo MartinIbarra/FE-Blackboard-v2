@@ -8,7 +8,6 @@ import { useHookstate } from "@hookstate/core";
 // import Layout from "./views/Layout";
 // import Home from "./views/Home";
 import Layout from "./views/Layout";
-// import Signup from "./views/Signup";
 import Login from "./views/Login";
 import { useEffect, useState } from "react";
 import { RoomListI } from "./types/room.types";

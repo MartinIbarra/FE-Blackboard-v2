@@ -9,7 +9,7 @@ const ChatMessages: React.FC<{
 
   const isFromSocket = socket_msg.from === userCredentials.get().email;
 
-  if (!isFromSocket) {
+  if (isFromSocket) {
     return (
       <p className={`flex bg-green-300 justify-end`}>
         {socket_msg.msg}

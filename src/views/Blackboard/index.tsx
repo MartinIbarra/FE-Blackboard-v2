@@ -3,38 +3,20 @@ import { socket } from "../../socket";
 import {
   CoordenadasTypes,
   DibujandoSocketTypes,
-  // BorradorTypes,
 } from "../../types/socket.types";
-import {
-  useLocation,
-  // useNavigate
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { globalState } from "../../store";
 import { useHookstate } from "@hookstate/core";
-// import UsersChat from "../UsersChat";
-// import { useParams } from "react-dom";
-// import ColorPalette from "./ColorPalette";
-// import { UserContext } from "../../UserContext";
 
 const Blackboard = () => {
-  // const navigate = useNavigate();
   const { userCredentials } = useHookstate(globalState);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const borradorRef = useRef(null) as any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const penRef = useRef(null) as any;
-  // const [color, setColor] = useState("#000000");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useLocation();
-
-  // console.log("state =>", state);
-  // const { user, setUser } = useContext(UserContext);
-  // let { room_id, room_name } = useParams();
-
-  // const getColor = (param) => {
-  //   setColor(param);
-  // };
 
   useEffect(() => {
     const canv = canvasRef.current;
@@ -69,10 +51,6 @@ const Blackboard = () => {
       ctx?.clearRect(pos.x - 50, pos.y - 50, 100, 100);
     };
 
-    // const borrandoSocket = (data: { pos: CoordenadasTypes }) => {
-    //   ctx?.clearRect(data.pos.x - 50, data.pos.y - 50, 100, 100);
-    // };
-    //
     const dibujandoSocket = (data: DibujandoSocketTypes) => {
       if (ctx) {
         // console.log("dibujandosocket => ", data);
@@ -121,12 +99,6 @@ const Blackboard = () => {
       canv !== null &&
       canv !== undefined
     ) {
-      // socket.emit("join", {
-      //   name: state.name,
-      //   room_id: state.roomID,
-      //   user_id: user._id,
-      //   room_name,
-      // });
       ctx.lineWidth = 1;
 
       if (

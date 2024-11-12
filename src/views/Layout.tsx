@@ -9,13 +9,7 @@ import GoogleSignInBtn from "../components/GoogleSignInBtn";
 import UsersList from "../components/UsersList";
 
 const Layout: React.FC = () => {
-  const {
-    // isConnected,
-    // socket_name,
-    // socket_list,
-    userCredentials,
-  } = useHookstate(globalState);
-  // isConnected.set(socket.connected);
+  const { userCredentials } = useHookstate(globalState);
 
   return (
     <div className="flex flex-col h-screen w-screen">

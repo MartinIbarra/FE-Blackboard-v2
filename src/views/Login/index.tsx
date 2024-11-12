@@ -7,7 +7,6 @@ import { RoomListI } from "../../types/room.types";
 import { theme } from "../../theme/theme";
 import { globalState } from "../../store";
 import { useHookstate } from "@hookstate/core";
-//import GoogleSignInBtn from "../../components/GoogleSignInBtn";
 
 const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
   const [roomName, setRoomName] = useState<string>("");
@@ -35,8 +34,8 @@ const Login: React.FC<{ rooms_list: RoomListI }> = ({ rooms_list }) => {
       userCredentials.get().name &&
       userCredentials.get().name !== ""
     ) {
-      console.log(`name => ${userCredentials.get().name}`);
-      console.log(`roomName => ${roomName}`);
+      // console.log(`name => ${userCredentials.get().name}`);
+      // console.log(`roomName => ${roomName}`);
       socket.emit("createRoom", {
         room: roomName,
         socket_cred: userCredentials.get(),
