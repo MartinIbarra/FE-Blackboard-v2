@@ -20,7 +20,7 @@ const UsersChat: React.FC = () => {
   }
 
   useEffect(() => {
-    socket.on("socketMsg", (data: SocketMsgI) => {
+    socket.on("socketMsg", (data: SocketMsgI): void => {
       setMsgList((prev: SocketMsgListI[]): SocketMsgListI[] => {
         if (prev.length > 0) {
           return [...prev, { msg: data.msg, from: data.socket_email }];
@@ -34,7 +34,7 @@ const UsersChat: React.FC = () => {
     };
   }, []);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     socket.emit("socketMsg", {
       msg: input_msg,
@@ -61,7 +61,7 @@ const UsersChat: React.FC = () => {
           value={input_msg}
           onChange={onChangeInputHandler}
         />
-        <SubmitBtn label="send" />
+        <SubmitBtn primary={true} label="send" />
       </form>
     </div>
   );

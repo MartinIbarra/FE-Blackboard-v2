@@ -7,6 +7,10 @@ import {
 import { useLocation } from "react-router-dom";
 import { globalState } from "../../store";
 import { useHookstate } from "@hookstate/core";
+import { BorradorTypes } from "../../types/socket.types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faPen, faEraser } from "@fortawesome/free-solid-svg-icons";
 
 const Blackboard = () => {
   const { userCredentials } = useHookstate(globalState);
@@ -48,6 +52,11 @@ const Blackboard = () => {
     const borrar = (e: MouseEvent) => {
       const pos = obtenerPosicion(e);
       socket.emit("borrando", { pos, room_id: state.room });
+      ctx?.clearRect(pos.x - 50, pos.y - 50, 100, 100);
+    };
+
+    const borrandoSocket = (e: MouseEvent) => {
+      const pos = obtenerPosicion(e);
       ctx?.clearRect(pos.x - 50, pos.y - 50, 100, 100);
     };
 
@@ -156,9 +165,9 @@ const Blackboard = () => {
         dibujandoSocket(data);
       });
 
-      //socket.on("borrando", (data: BorradorTypes) => {
-      //  borrandoSocket(data);
-      //});
+      socket.on("borrando", (data: BorradorTypes) => {
+        borrandoSocket(data);
+      });
 
       // socket.on("changeColor", (data: string) => setColor(data));
     } else {
@@ -173,13 +182,28 @@ const Blackboard = () => {
     };
   }, []);
   return (
-    <div className="flex">
-      {/* <ColorPalette getColor={getColor} user={socket} /> */}
-      {/*<span id="pen" ref={penRef}></span> */}
-      <div className="flex m-auto">
+    <div className="flex flex-col gap-2 w-full px-4">
+      <div className="flex px-4 py-1 gap-2 bg-secondary rounded-sm">
+        {/* <ColorPalette getColor={getColor} user={socket} /> */}
+        <div
+          ref={penRef}
+          className="flex p-2 justify-center items-center bg-gray-400 cursor-pointer rounded-sm"
+        >
+          <FontAwesomeIcon icon={faPen} color={"#333333"} />
+        </div>
+        <div
+          ref={borradorRef}
+          className="flex p-2 justify-center items-center bg-gray-400 cursor-pointer rounded-sm"
+        >
+          <FontAwesomeIcon icon={faEraser} color={"#333333"} />
+        </div>
+        {/* <span id="pen" className="pen" ref={penRef}></span> */}
+        {/* <span id="borrador" className="borrador" ref={borradorRef}></span> */}
+      </div>
+      <div className="flex m-auto w-full">
         <canvas
           id="canvas"
-          width="800"
+          width="950"
           height="600"
           className="bg-white flex"
           ref={canvasRef}

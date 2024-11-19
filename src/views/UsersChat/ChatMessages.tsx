@@ -11,7 +11,7 @@ const ChatMessages: React.FC<{
 
   if (isFromSocket) {
     return (
-      <p className={`flex bg-green-300 justify-end`}>
+      <p className={`flex bg-green-300 justify-end py-1 px-2`}>
         {socket_msg.msg}
         {" :"}
         {userCredentials.get().name}
@@ -19,7 +19,7 @@ const ChatMessages: React.FC<{
     );
   }
   return (
-    <p className={`flex bg-red-300 justify-start`}>
+    <p className={`flex bg-red-300 justify-start py-1 px-2`}>
       {userCredentials.get().name}
       {": "}
       {socket_msg.msg}
