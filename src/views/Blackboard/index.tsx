@@ -27,8 +27,11 @@ const Blackboard = () => {
     const ctx = canv?.getContext("2d");
     let dibujando = false;
     let borrando = false;
-    let pen = true;
-    let borrador = false;
+
+    let isPenActive = true;
+
+    // let pen = true;
+    // let borrador = false;
 
     const coordenadas: CoordenadasTypes = {
       x: 0,
@@ -119,8 +122,10 @@ const Blackboard = () => {
         borradorRef.current.addEventListener(
           "click",
           () => {
-            borrador = true;
-            pen = false;
+            isPenActive = false;
+
+            // borrador = true;
+            // pen = false;
           },
           false,
         );
@@ -128,19 +133,21 @@ const Blackboard = () => {
         penRef.current.addEventListener(
           "click",
           () => {
-            borrador = false;
-            pen = true;
+            isPenActive = true;
+            // borrador = false;
+            // pen = true;
           },
           false,
         );
       }
 
       canv.addEventListener("mousedown", (event: MouseEvent) => {
-        if (pen) {
+        if (isPenActive) {
           dibujando = true;
-        } else if (borrador) {
+        } else {
           borrando = true;
         }
+
         obtenerPosicion(event);
       });
 
@@ -152,9 +159,9 @@ const Blackboard = () => {
       canv.addEventListener(
         "mousemove",
         (e: MouseEvent) => {
-          if (pen && dibujando) {
+          if (isPenActive && dibujando) {
             dibujar(e);
-          } else if (borrador && borrando) {
+          } else if (!isPenActive && borrando) {
             borrar(e);
           }
         },
